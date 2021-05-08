@@ -77,7 +77,6 @@ Path BFS_OD(ProblemInstance &p, int cdt, vector<set<int>> Neighbor, uint n_cores
 
 			if (!visited[v])
 			{
-
 				visited[v] = 1;
 				distance[v] = distance[u] + 1;
 				pred[v] = u;
