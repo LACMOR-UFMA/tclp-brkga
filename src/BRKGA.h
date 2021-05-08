@@ -76,8 +76,7 @@ public:
 #include <list>
 #include <vector>
 #include <algorithm>
-	BRKGA(double nC1, double nC2, double nC3, Solution _individuo1,
-		  Solution _individuo2, Solution _individuo3,
+	BRKGA(double nC1, double nC2, double nC3,
 		  ProblemInstance _problema, unsigned n, unsigned p, double pe,
 		  double pm, double rhoe, const Decoder &refDecoder, RNG &refRNG,
 		  unsigned K, unsigned MAX_THREADS);
@@ -131,14 +130,11 @@ public:
 	unsigned getK() const;
 	unsigned getMAX_THREADS() const;
 
-	ProblemInstance problema;
-	Solution individuo_C1;
-	Solution individuo_C2;
-	Solution individuo_C3;
-	Solution individuo_GSR;
-	double nC1, nC2, nC3, nGSR;
-
 private:
+	// Heuristics constructors
+	double nC1, nC2, nC3, nGSR;
+	ProblemInstance problema;
+
 	// Hyperparameters:
 	const unsigned n;  // number of genes in the chromosome
 	const unsigned p;  // number of elements in the population
@@ -147,8 +143,8 @@ private:
 	const double rhoe; // probability that an offspring inherits the allele of its elite parent
 
 	// Templates:
-	RNG &refRNG;			   // reference to the random number generator
 	const Decoder &refDecoder; // reference to the problem-dependent Decoder
+	RNG &refRNG;			   // reference to the random number generator
 
 	// Parallel populations parameters:
 	const unsigned K; // number of independent parallel populations
@@ -167,12 +163,10 @@ private:
 
 template <class Decoder, class RNG>
 BRKGA<Decoder, RNG>::BRKGA(double nc1, double nc2, double nc3,
-						   Solution _individuo1, Solution _individuo2, Solution _individuo3,
 						   ProblemInstance _problema, unsigned _n, unsigned _p, double _pe,
 						   double _pm, double _rhoe, const Decoder &decoder, RNG &rng, unsigned _K,
-						   unsigned MAX) : nC1(nc1), nC2(nc2), nC3(nc3), individuo_C1(_individuo1), individuo_C2(_individuo2), individuo_C3(_individuo3), problema(_problema), n(_n), p(_p), pe(unsigned(_pe *p)), pm(unsigned(_pm *p)), rhoe(_rhoe), refRNG(rng), refDecoder(decoder), K(_K), MAX_THREADS(MAX), previous(K, 0), current(K, 0), individuo_GSR(MAX)
+						   unsigned MAX) : nC1(nc1), nC2(nc2), nC3(nc3), problema(_problema), n(_n), p(_p), pe(unsigned(_pe *p)), pm(unsigned(_pm *p)), rhoe(_rhoe), refDecoder(decoder), refRNG(rng), K(_K), MAX_THREADS(MAX), previous(K, 0), current(K, 0)
 {
-
 	// Error check:
 	using std::range_error;
 
@@ -345,7 +339,7 @@ inline void BRKGA<Decoder, RNG>::initialize(const unsigned i)
 	Solution s1(MAX_THREADS), s2(MAX_THREADS), s3(MAX_THREADS);
 	Construtivo builder(problema, MAX_THREADS);
 
-	int j = 0;
+	uint j = 0;
 	//	initialize
 	if (nC1 > 0)
 	{

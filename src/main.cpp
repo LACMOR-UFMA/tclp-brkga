@@ -46,28 +46,18 @@ int main(int argc, char *argv[])
 	Scanner scanner(new File(instanceFile));
 
 	ProblemInstance p(scanner);
-	Solution s1(_MAXT), s2(_MAXT), s3(_MAXT);
-	Construtivo Const(p, _MAXT);
-
-	s1 = Const.C1();
-	s2 = Const.C2(seed, _MAXT);
-	s3 = Const.C3();
-
 	ProblemInstance _problema = p;
-	unsigned _n = p.NbEdge;
 
+	unsigned _n = p.NbEdge;
 	unsigned _p = 100;
 	double _pe = 0.30;
 	double _pm = 0.20;
 	double _rhoe = 0.70;
 	unsigned _K = 1;
-	long unsigned _rngSeed = 0;
 	unsigned _generation = 0;
 	unsigned _X_INTVL = 15;
 	unsigned _X_NUMBER = 2;
 	unsigned _MAX_GENS = 200;
-	double elapsed_secs;
-	double target = 0.0;
 
 	SampleDecoder decoder(_problema); // initialize the decoder
 
@@ -81,9 +71,7 @@ int main(int argc, char *argv[])
 	time(&start);
 
 	// initialize the BRKGA-based heuristic
-	BRKGA<SampleDecoder, MTRand> algorithm(nc1, nc2, nc3, s1, s2, s3,
-										   _problema, _n, _p, _pe, _pm, _rhoe, decoder, rng, _K, _MAXT);
-	double somaFitness = 0.0;
+	BRKGA<SampleDecoder, MTRand> algorithm(nc1, nc2, nc3, _problema, _n, _p, _pe, _pm, _rhoe, decoder, rng, _K, _MAXT);
 
 	clock_t initialClock, finalClock;
 	initialClock = clock();

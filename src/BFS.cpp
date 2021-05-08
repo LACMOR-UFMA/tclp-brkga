@@ -27,7 +27,7 @@ int *BFS(int init_node, int NMAX, vector<int> *adjlist)
 		bfsq.pop();
 
 		//Now look at all neighbours of u
-		for (int i = 0; i < adjlist[u].size(); i++)
+		for (uint i = 0; i < adjlist[u].size(); i++)
 		{
 			int v = adjlist[u][i];
 			//If v has not been processed yet, do that now
@@ -66,7 +66,7 @@ Path BFS_OD(ProblemInstance &p, int cdt, vector<set<int>> Neighbor, uint n_cores
 	queue<int> bfsq;
 	bfsq.push(p.commodity[cdt].orig);
 
-	while (!bfsq.empty())
+	while (!bfsq.empty() && !flag)
 	{
 		int u = bfsq.front();
 		bfsq.pop();
@@ -75,7 +75,6 @@ Path BFS_OD(ProblemInstance &p, int cdt, vector<set<int>> Neighbor, uint n_cores
 		{
 			int v = (*it);
 
-			// if v has not been processed yet, do that now
 			if (!visited[v])
 			{
 
@@ -92,14 +91,8 @@ Path BFS_OD(ProblemInstance &p, int cdt, vector<set<int>> Neighbor, uint n_cores
 				bfsq.push(v);
 			}
 		}
-
-		if (flag)
-		{
-			break;
-		};
 	}
 
-	//We are done. We have the reachability and distances to all vertices
 	int key = p.commodity[cdt].dest;
 
 	while (pred[key] != -1)

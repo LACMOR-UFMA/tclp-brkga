@@ -19,8 +19,7 @@ SampleDecoder::~SampleDecoder()
 double SampleDecoder::decode(const std::vector<double> &chromosome, int cores) const
 {
 	unsigned n = chromosome.size();
-	unsigned i, nContadores = 0;
-	double fitness = 0.0;
+	unsigned i;
 	double M = 9999.0;
 	Solution s(cores);
 
