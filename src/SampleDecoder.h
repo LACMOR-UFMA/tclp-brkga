@@ -27,6 +27,7 @@
 #include "Solution.h"
 #include "Construtivo.h"
 #include "BFS.h"
+#include "tclp.h"
 
 class SampleDecoder
 {
@@ -38,9 +39,12 @@ private:
 	uint64_t hashCode(uint v[], uint size) const;
 
 public:
-	SampleDecoder(ProblemInstance _p);
+	SampleDecoder(ProblemInstance _p, TCLP *_tclp);
 	~SampleDecoder();
 	double decode(const std::vector<double> &chromosome, int cores) const;
+
+	ProblemInstance p;
+	TCLP *tclp;
 };
 
 #endif

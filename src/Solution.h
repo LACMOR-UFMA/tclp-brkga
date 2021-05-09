@@ -4,9 +4,10 @@
 #include <iostream>
 #include "ProblemInstance.h"
 #include "BFS.h"
-#include "Path.h"
 #include <vector>
 #include <set>
+#include "tclp.h"
+#include "ProblemPath.h"
 
 using namespace std;
 
@@ -27,6 +28,10 @@ public:
 
 	set<int> getEdge() { return this->Edge; };
 	int checkFeasibility(ProblemInstance p, uint n_cores);
+	double getCost() { return cost; };
+	int CheckFeas(ProblemInstance p, uint n_cores);
+	int CheckFeas2(ProblemInstance p);
+	int CheckFeas3(TCLP *tclp);
 };
 
 #endif //SOLUTION_H_

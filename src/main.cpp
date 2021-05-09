@@ -12,6 +12,8 @@
 #include "MTRand.h"
 #include "SampleDecoder.h"
 #include <ctime>
+#include "Mycallback.h"
+#include "parameters.h"
 
 using namespace std;
 using namespace lemon;
@@ -55,6 +57,10 @@ int main(int argc, char *argv[])
 	const uint EXCHANGE_INTERVAL = 15;
 	const uint EXCHANGE_NUMBER = 2;
 	const uint MAX_GENERATIONS = 100;
+	ProblemInstance p(scanner);
+	ProblemInstance _problema = p;
+	Parameters params(instanceFile);
+	TCLP tclp(&params);
 
 	const double LIMIT_TIME = 3600;
 	Timer timer(false);
@@ -62,6 +68,7 @@ int main(int argc, char *argv[])
 
 	MTRand rng(cSeed);			 				// initialize the random number generator - BRKGA
 	srand(cSeed);				 				// initialize the random number generator - Construtivo
+	SampleDecoder decoder(_problema, &tclp); 	// initialize the decoder
 
 	timer.start();
 

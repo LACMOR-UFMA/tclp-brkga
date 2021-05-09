@@ -9,7 +9,6 @@
 #include "Solution.h"
 #include "ProblemInstance.h"
 #include "BFS.h"
-#include "Path.h"
 #include "MinCut.h"
 
 using namespace std;

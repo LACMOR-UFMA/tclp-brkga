@@ -37,8 +37,8 @@ int Solution::checkFeasibility(ProblemInstance p, uint n_cores)
 #pragma omp parallel for schedule(dynamic) num_threads(this->n_cores)
 	for (int k = 0; (k < p.NbK); ++k)
 	{
-		Path path(&p);
-		path = BFS(p, k, Neighbor);
+		ProblemPath path(&p, k);
+		path = BFS_OD(p, k, Neighbor, this->n_cores);
 
 		if (path.getPath().size() > 0)
 		{
@@ -48,6 +48,78 @@ int Solution::checkFeasibility(ProblemInstance p, uint n_cores)
 	}
 
 	return inviability_degree;
+}
+
+int Solution::CheckFeas2(ProblemInstance p)
+{
+
+	vector<vector<int>> Neighborhood;
+
+	for (int i = 0; i < p.NbNode; ++i)
+	{
+		vector<int> Neighbor;
+		Neighbor.assign(p.Neighbor[i].begin(), p.Neighbor[i].end());
+
+		for (vector<int>::iterator it = p.Neighbor[i].begin(); it != p.Neighbor[i].end(); ++it)
+		{
+			for (set<int>::iterator it2 = Edge.begin(); Edge.size() > 0 && it2 != Edge.end(); ++it2)
+			{
+				if ((*it) == p.edge[(*it2)].tail)
+				{
+					Neighbor.erase(
+						remove(Neighbor.begin(), Neighbor.end(),
+							   p.edge[(*it2)].tail),
+						Neighbor.end());
+				}
+				else if ((*it) == p.edge[(*it2)].head)
+				{
+					Neighbor.erase(
+						remove(Neighbor.begin(), Neighbor.end(),
+							   p.edge[(*it2)].head),
+						Neighbor.end());
+				}
+			}
+		}
+
+		Neighborhood.push_back(Neighbor);
+	}
+
+	int grau_inviabilidade = 0;
+	for (int k = 0; k < p.NbK; ++k)
+	{
+		ProblemPath path(&p, k);
+		path = BFS_OD_2(p, k, Neighborhood);
+		if (path.getPath().size() > 0)
+		{
+			grau_inviabilidade++;
+		}
+	}
+	return grau_inviabilidade;
+}
+
+int Solution::CheckFeas3(TCLP *tclp)
+{
+	uint count = 0, edge, violations = 0;
+
+	tclp->subGraph = new SubGraph<SmartGraph>(tclp->graph, *tclp->nodeMap, *tclp->edgeMap);
+
+	for (set<int>::iterator it = this->getEdge().begin(); it != this->getEdge().end(); ++it)
+	{
+		edge = tclp->p->getEdgeByIndex(*it);
+		(*tclp->subGraph).status(tclp->subGraph->edgeFromId(tclp->edgesToLemon.operator[](edge)), true);
+	}
+
+	vector<pair<uint, uint>> *v = tclp->discretizedPodsToLemon;
+
+	for (uint i = 0; i < v->size(); ++i)
+	{
+		if (!tclp->hasPath(tclp->subGraph->nodeFromId(v->at(i).first), tclp->subGraph->nodeFromId(v->at(i).second)))
+		{
+			violations++;
+		}
+	}
+
+	return violations;
 }
 
 #endif // SOLUTION_CPP_

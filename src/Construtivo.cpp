@@ -94,8 +94,8 @@ Solution Construtivo::C2(long seed, uint n_cores)
 		index = rand() % Par.size();
 		while (Flag)
 		{
-			Path path(&this->p);
-			path = BFS(this->p, Par[index], Neighbor);
+			ProblemPath path(&this->p, Par[index]);
+			path = BFS_OD(this->p, Par[index], Neighbor, n_cores);
 			if (path.getPath().size() > 0)
 			{
 				posa = rand() % path.getPath().size();
