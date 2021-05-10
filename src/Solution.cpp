@@ -67,12 +67,8 @@ int Solution::CheckFeas(ProblemInstance p, uint n_cores)
 
 		if (path.getPath().size() > 0)
 		{
-
-#pragma omp critical
-			{
-				grau_inviabilidade++;
-				k = p.NbK;
-			}
+			grau_inviabilidade++;
+			k = p.NbK;
 		}
 	}
 
