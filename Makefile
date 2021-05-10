@@ -1,5 +1,5 @@
 CXX = g++
-CXXFLAGS = -std=c++0x -Wall -g -O3
+CXXFLAGS = -std=c++0x -Wall -g -O3 -march=native -mtune=native
 FILES = src/main.cpp src/Construtivo.cpp src/FWChrono.cpp src/MinCut.cpp src/Path.cpp src/ProblemInstance.cpp src/SampleDecoder.cpp src/Solution.cpp src/BFS.cpp src/Scanner.cpp
 
 tclp-brkga:

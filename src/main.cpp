@@ -49,7 +49,7 @@ int main(int argc, char *argv[])
 	ProblemInstance _problema = p;
 
 	unsigned _n = p.NbEdge;
-	unsigned _p = 100;
+	unsigned _p = 20;
 	double _pe = 0.30;
 	double _pm = 0.20;
 	double _rhoe = 0.70;
@@ -57,7 +57,7 @@ int main(int argc, char *argv[])
 	unsigned _generation = 0;
 	unsigned _X_INTVL = 15;
 	unsigned _X_NUMBER = 2;
-	unsigned _MAX_GENS = 200;
+	unsigned _MAX_GENS = 100;
 
 	SampleDecoder decoder(_problema); // initialize the decoder
 
