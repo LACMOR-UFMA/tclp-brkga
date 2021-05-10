@@ -23,13 +23,11 @@ public:
 
     void discretizePodsToLemon();
 
-    bool hasPath(SubGraph<SmartGraph>::Node u, SubGraph<SmartGraph>::Node v);
+    bool hasPath(SubGraph<SmartGraph> *subgraph, uint uId, uint vId);
 
     Parameters *p;
 
     SmartGraph graph;
-
-    SubGraph<SmartGraph> *subGraph;
 
     SmartGraph::NodeMap<bool> *nodeMap;
     SmartGraph::EdgeMap<bool> *edgeMap;

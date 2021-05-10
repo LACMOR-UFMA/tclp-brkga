@@ -92,7 +92,7 @@ void Parameters::readInstanceEdges()
         } while (i < 3);
 
         this->edges.insert({linePosition[0], {linePosition[1], linePosition[2]}});
-        this->vectorEdges->push_back(readPairs);
+        this->vectorEdges->push_back(linePosition[0]);
 
         readPairs++;
     } while (readPairs < this->nEdges);
@@ -130,5 +130,5 @@ uint Parameters::getEdgeByIndex(uint index)
 
 vector<uint> *Parameters::getVectorPods()
 {
-    return this->vectorEdges;
+    return this->vectorPods;
 }

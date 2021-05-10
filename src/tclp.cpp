@@ -71,8 +71,13 @@ void TCLP::discretizePodsToLemon()
     }
 }
 
-bool TCLP::hasPath(SubGraph<SmartGraph>::Node u, SubGraph<SmartGraph>::Node v)
+bool TCLP::hasPath(SubGraph<SmartGraph> *subgraph, uint uId, uint vId)
 {
-    Bfs<SubGraph<SmartGraph>> bfs(*this->subGraph);
-    return bfs.run(u, v);
+    SubGraph<SmartGraph>::Node u = subgraph->nodeFromId(uId);
+    SubGraph<SmartGraph>::Node v = subgraph->nodeFromId(vId);
+    Bfs<SubGraph<SmartGraph>> bfs(*subgraph);
+
+    bool result = bfs.run(u, v);
+
+    return result;
 }

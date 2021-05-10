@@ -100,22 +100,28 @@ int Solution::CheckFeas2(ProblemInstance p)
 int Solution::CheckFeas3(TCLP *tclp)
 {
 	uint count = 0, edge, violations = 0;
+	set<int> edges = this->getEdge();
 
-	tclp->subGraph = new SubGraph<SmartGraph>(tclp->graph, *tclp->nodeMap, *tclp->edgeMap);
+	SubGraph<SmartGraph> subgraph(tclp->graph, *tclp->nodeMap, *tclp->edgeMap);
 
-	for (set<int>::iterator it = this->getEdge().begin(); it != this->getEdge().end(); ++it)
+	for (set<int>::iterator it = edges.begin(); it != edges.end(); ++it)
 	{
 		edge = tclp->p->getEdgeByIndex(*it);
-		(*tclp->subGraph).status(tclp->subGraph->edgeFromId(tclp->edgesToLemon.operator[](edge)), true);
+		subgraph.status(subgraph.edgeFromId(tclp->edgesToLemon.operator[](edge)), true);
 	}
 
 	vector<pair<uint, uint>> *v = tclp->discretizedPodsToLemon;
 
+//#pragma omp parallel for num_threads(this->n_cores) private(subgraph)
 	for (uint i = 0; i < v->size(); ++i)
 	{
-		if (!tclp->hasPath(tclp->subGraph->nodeFromId(v->at(i).first), tclp->subGraph->nodeFromId(v->at(i).second)))
+		if (!tclp->hasPath(&subgraph, v->at(i).first, v->at(i).second))
 		{
-			violations++;
+//#pragma omp critical
+//			{
+				violations++;
+				i = v->size();
+//			}
 		}
 	}
 
