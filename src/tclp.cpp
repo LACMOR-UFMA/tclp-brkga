@@ -21,8 +21,6 @@ void TCLP::initialize()
         uNode = this->buildNode(it.second.first);
         vNode = this->buildNode(it.second.second);
         edge = this->graph.addEdge(uNode, vNode);
-
-        this->edgesToLemon.insert({it.first, this->graph.id(edge)});
     }
     this->discretizePodsToLemon();
     this->nodeMap = new SmartGraph::NodeMap<bool>(this->graph, true);
@@ -53,29 +51,24 @@ SmartGraph::Node TCLP::buildNode(unsigned int nodeId)
 
 void TCLP::discretizePodsToLemon()
 {
-    uint nPods, count = 0;
+    uint nPods = this->p->getNPods();
 
-    nPods = this->p->getNPods() * (this->p->getNPods() - 1) / 2;
-
-    this->discretizedPodsToLemon = new vector<pair<uint, uint>>[nPods];
-
-    for (uint i = 0; i < this->p->getNPods() - 1; i++)
+    for (uint i = 0; i < nPods - 1; ++i)
     {
-        for (uint j = i + 1; j < this->p->getNPods(); j++)
+        for (uint j = i + 1; j < nPods; ++j)
         {
-            uint origin = this->podsToLemon.operator[](this->p->getPODByIndex(i));
-            uint destiny = this->podsToLemon.operator[](this->p->getPODByIndex(j));
-            this->discretizedPodsToLemon->push_back({origin, destiny});
-            ++count;
+            uint origin = this->podsToLemon[this->p->getPODByIndex(i)];
+            uint destiny = this->podsToLemon[this->p->getPODByIndex(j)];
+            this->discretizedPodsToLemon.push_back({origin, destiny});
         }
     }
 }
 
-bool TCLP::hasPath(SubGraph<SmartGraph> *subgraph, uint uId, uint vId)
+bool TCLP::hasPath(SubGraph<SmartGraph> subgraph, uint uId, uint vId)
 {
-    SubGraph<SmartGraph>::Node u = subgraph->nodeFromId(uId);
-    SubGraph<SmartGraph>::Node v = subgraph->nodeFromId(vId);
-    Bfs<SubGraph<SmartGraph>> bfs(*subgraph);
+    SubGraph<SmartGraph>::Node u = subgraph.nodeFromId(uId);
+    SubGraph<SmartGraph>::Node v = subgraph.nodeFromId(vId);
+    Bfs<SubGraph<SmartGraph>> bfs(subgraph);
 
     bool result = bfs.run(u, v);
 

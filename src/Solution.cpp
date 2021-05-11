@@ -2,6 +2,7 @@
 #define SOLUTION_CPP_
 
 #include "Solution.h"
+#include <omp.h>
 
 void Solution::add_Edge(int i)
 {
@@ -99,29 +100,34 @@ int Solution::CheckFeas2(ProblemInstance p)
 
 int Solution::CheckFeas3(TCLP *tclp)
 {
-	uint count = 0, edge, violations = 0;
+	uint edge, violations = 0;
 	set<int> edges = this->getEdge();
 
-	SubGraph<SmartGraph> subgraph(tclp->graph, *tclp->nodeMap, *tclp->edgeMap);
+	vector<pair<uint, uint>> pairs = tclp->discretizedPodsToLemon;
+	SmartGraph::EdgeMap<bool> edgeMap(tclp->graph, false);
 
 	for (set<int>::iterator it = edges.begin(); it != edges.end(); ++it)
 	{
-		edge = tclp->p->getEdgeByIndex(*it);
-		subgraph.status(subgraph.edgeFromId(tclp->edgesToLemon.operator[](edge)), true);
+		edgeMap[tclp->graph.edgeFromId(*it)] = true;
 	}
 
-	vector<pair<uint, uint>> *v = tclp->discretizedPodsToLemon;
+	SubGraph<SmartGraph> subgraph(tclp->graph, *tclp->nodeMap, edgeMap);
 
-//#pragma omp parallel for num_threads(this->n_cores) private(subgraph)
-	for (uint i = 0; i < v->size(); ++i)
+	ofstream output;
+  	
+	output.open ("output.eps");
+
+	graphToEps(subgraph, output).scale(10).nodeScale(2).arcWidthScale(.4).run();
+
+	output.close();
+
+#pragma omp parallel for num_threads(this->n_cores)
+	for (uint i = 0; i < pairs.size(); ++i)
 	{
-		if (!tclp->hasPath(&subgraph, v->at(i).first, v->at(i).second))
+		if (!tclp->hasPath(subgraph, pairs[i].first, pairs[i].second))
 		{
-//#pragma omp critical
-//			{
-				violations++;
-				i = v->size();
-//			}
+			violations++;
+			i = pairs.size();
 		}
 	}
 

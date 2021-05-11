@@ -42,7 +42,7 @@ private:
     unordered_map<uint, pair<uint, uint>> edges;
 
     vector<uint> *vectorPods;
-    vector<uint> *vectorEdges;
+    vector<uint> vectorEdges;
 
     ifstream file;
 };

@@ -14,6 +14,7 @@
 #include <ctime>
 #include "Mycallback.h"
 #include "parameters.h"
+#include <lemon/graph_to_eps.h>
 
 using namespace std;
 using namespace lemon;
@@ -65,6 +66,16 @@ int main(int argc, char *argv[])
 	const double LIMIT_TIME = 3600;
 	Timer timer(false);
 	const uint64_t cSeed = seed;
+	unsigned _n = p.NbEdge;
+	unsigned _p = 20;
+	double _pe = 0.30;
+	double _pm = 0.20;
+	double _rhoe = 0.70;
+	unsigned _K = 1;
+	unsigned _generation = 0;
+	unsigned _X_INTVL = 15;
+	unsigned _X_NUMBER = 2;
+	unsigned _MAX_GENS = 100;
 
 	MTRand rng(cSeed);			 				// initialize the random number generator - BRKGA
 	srand(cSeed);				 				// initialize the random number generator - Construtivo
