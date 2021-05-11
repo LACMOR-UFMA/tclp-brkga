@@ -32,8 +32,7 @@ public:
 
 	set<int> getEdge() { return this->Edge; };
 	double getCost() { return cost; };
-	int CheckFeas(ProblemInstance p, uint n_cores);
-	int CheckFeas2(ProblemInstance p);
+	int checkFeasibility(ProblemInstance p, uint n_cores);
 };
 
 #endif //SOLUTION_H_

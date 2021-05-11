@@ -12,7 +12,6 @@ using namespace std;
 
 int * BFS(int init_node, int NMAX, vector<int>* adjlist);
 
-Path BFS_OD(ProblemInstance& p, int cdt, vector<set<int> > Neighbor, uint n_cores);
-Path BFS_OD_2(ProblemInstance& p, int cdt, vector<vector<int> > Neighbor);
+Path BFS_OD(ProblemInstance& p, int cdt, vector<set<int> > Neighbor);
 
 #endif /* BFS_H_ */

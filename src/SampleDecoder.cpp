@@ -31,7 +31,7 @@ double SampleDecoder::decode(const std::vector<double> &chromosome, int cores) c
 		}
 	}
 
-	int inviavel = s.CheckFeas(p, cores);
+	int inviavel = s.checkFeasibility(p, cores);
 
 	return (inviavel * M) + s.getEdge().size();
 }

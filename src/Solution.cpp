@@ -33,7 +33,7 @@ ostream &operator<<(ostream &strm, Solution &s)
 	return strm;
 }
 
-int Solution::CheckFeas(ProblemInstance p, uint n_cores)
+int Solution::checkFeasibility(ProblemInstance p, uint n_cores)
 {
 
 	vector<set<int>> Neighbor;
@@ -63,7 +63,7 @@ int Solution::CheckFeas(ProblemInstance p, uint n_cores)
 	for (int k = 0; (k < p.NbK); ++k)
 	{
 		Path path(&p, k);
-		path = BFS_OD(p, k, Neighbor, this->n_cores);
+		path = BFS_OD(p, k, Neighbor);
 
 		if (path.getPath().size() > 0)
 		{
@@ -72,53 +72,6 @@ int Solution::CheckFeas(ProblemInstance p, uint n_cores)
 		}
 	}
 
-	return grau_inviabilidade;
-}
-
-int Solution::CheckFeas2(ProblemInstance p)
-{
-
-	vector<vector<int>> Neighborhood;
-
-	for (int i = 0; i < p.NbNode; ++i)
-	{
-		vector<int> Neighbor;
-		Neighbor.assign(p.Neighbor[i].begin(), p.Neighbor[i].end());
-
-		for (vector<int>::iterator it = p.Neighbor[i].begin(); it != p.Neighbor[i].end(); ++it)
-		{
-			for (set<int>::iterator it2 = Edge.begin(); Edge.size() > 0 && it2 != Edge.end(); ++it2)
-			{
-				if ((*it) == p.edge[(*it2)].tail)
-				{
-					Neighbor.erase(
-						remove(Neighbor.begin(), Neighbor.end(),
-							   p.edge[(*it2)].tail),
-						Neighbor.end());
-				}
-				else if ((*it) == p.edge[(*it2)].head)
-				{
-					Neighbor.erase(
-						remove(Neighbor.begin(), Neighbor.end(),
-							   p.edge[(*it2)].head),
-						Neighbor.end());
-				}
-			}
-		}
-
-		Neighborhood.push_back(Neighbor);
-	}
-
-	int grau_inviabilidade = 0;
-	for (int k = 0; k < p.NbK; ++k)
-	{
-		Path path(&p, k);
-		path = BFS_OD_2(p, k, Neighborhood);
-		if (path.getPath().size() > 0)
-		{
-			grau_inviabilidade++;
-		}
-	}
 	return grau_inviabilidade;
 }
 
