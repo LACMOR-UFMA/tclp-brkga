@@ -2,6 +2,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string>
+#include <lemon/time_measure.h>
 
 #include "ProblemInstance.h"
 #include "Solution.h"
@@ -15,6 +16,7 @@
 #include "Mycallback.h"
 
 using namespace std;
+using namespace lemon;
 
 int main(int argc, char *argv[])
 {
@@ -41,7 +43,7 @@ int main(int argc, char *argv[])
 		throw range_error("Construction heuristics cumulative percentage sum greater than 100.");
 	}
 
-	time_t start, end;
+	Timer timer(false);
 
 	Scanner scanner(new File(instanceFile));
 
@@ -68,13 +70,14 @@ int main(int argc, char *argv[])
 	nc2 = _p * nc2 / 100.0;
 	nc3 = _p * nc3 / 100.0;
 
-	time(&start);
+	timer.start();
 
 	// initialize the BRKGA-based heuristic
 	BRKGA<SampleDecoder, MTRand> algorithm(nc1, nc2, nc3, _problema, _n, _p, _pe, _pm, _rhoe, decoder, rng, _K, _MAXT);
 
 	clock_t initialClock, finalClock;
 	initialClock = clock();
+
 	do
 	{
 		algorithm.evolve(); // evolve the population for one generation
@@ -86,9 +89,9 @@ int main(int argc, char *argv[])
 		finalClock = clock();
 	} while (_generation < _MAX_GENS && ((double)finalClock - initialClock) / CLOCKS_PER_SEC < 3600);
 
-	time(&end);
+	timer.halt();
 
-	printf("%s;%.2f;%.2f\n", instanceFile, algorithm.getBestFitness(), double(end - start));
+	printf("%s;%.2f;%.2f\n", instanceFile, algorithm.getBestFitness(), timer.realTime());
 
 	return 0;
 }
