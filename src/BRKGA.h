@@ -229,7 +229,6 @@ BRKGA<Decoder, RNG>::~BRKGA()
 template <class Decoder, class RNG>
 const Population &BRKGA<Decoder, RNG>::getPopulation(unsigned k) const
 {
-	// cout << "get population\n";
 	return (*current[k]);
 }
 

@@ -29,11 +29,17 @@
 
 class SampleDecoder
 {
+private:
+	ProblemInstance p;
+
+	mutable map<uint64_t, double> memoization;
+
+	uint64_t hashCode(uint v[], uint size) const;
+
 public:
 	SampleDecoder(ProblemInstance _p);
 	~SampleDecoder();
 	double decode(const std::vector<double> &chromosome, int cores) const;
-	ProblemInstance p;
 };
 
 #endif
