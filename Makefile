@@ -8,5 +8,8 @@ tclp-brkga:
 fast-tclp-brkga:
 	$(CXX) $(CXXFLAGS) -Ofast -o fast-tclp-brkga $(FILES) -lemon -fopenmp
 
+cluster-run:
+	$(CXX) $(CXXFLAGS) -Ofast -o fast-tclp-brkga $(FILES) -lemon -fopenmp -I/app/devel/include -L/app/devel/lib
+
 clean:
 	rm -rf *.o tclp-brkga fast-tclp-brkga
