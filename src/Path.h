@@ -9,33 +9,29 @@
 
 using namespace std;
 
-class Path{
+class Path
+{
 private:
-	ProblemInstance* p;
+	ProblemInstance *p;
 
 	vector<int> path;
-	double impacto;
-	int commodity;
 
-	friend ostream& operator<<(ostream&, Path&);
+	friend ostream &operator<<(ostream &, Path &);
+
 public:
-	Path(ProblemInstance* _p, int k){
-		p=_p;
-		impacto = 1000;
-		commodity = k;
+	Path(ProblemInstance *_p)
+	{
+		p = _p;
 	}
 
-	~Path(){
-		p=NULL;
-		delete(p);
+	~Path()
+	{
+		p = NULL;
+		delete (p);
 	}
 
 	void add_Edge(int e);
-	void setImp(int e);
-
-	vector<int> getPath(){return path;};
-	double getImp(){return impacto;};
-	int getCommodity(){return commodity;};
+	vector<int> getPath() { return path; };
 };
 
 #endif /* PATH_H_ */

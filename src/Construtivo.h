@@ -24,12 +24,8 @@ public:
 	Construtivo(ProblemInstance &_p, int cores);
 	~Construtivo();
 	Solution C1();
-	Solution C1BRASIL();
 	Solution C2(long seed, uint n_cores);
 	Solution C3();
-	Solution C3FAST();
-	Solution C3_F2();
-	void CheckFeas(Solution s);
 };
 
 #endif /* CONSTRUTIVO_H_ */

@@ -22,6 +22,7 @@
 #include <vector>
 #include <algorithm>
 #include <iostream>
+
 #include "ProblemInstance.h"
 #include "Solution.h"
 #include "Construtivo.h"

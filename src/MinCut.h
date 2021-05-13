@@ -8,20 +8,22 @@
 
 using namespace std;
 
-class MinCut {
+class MinCut
+{
 private:
 	int N;
 	lemon::SmartGraph *g;
-	lemon::GomoryHu<lemon::SmartGraph,lemon::SmartGraph::EdgeMap<double> > *alg;
+	lemon::GomoryHu<lemon::SmartGraph, lemon::SmartGraph::EdgeMap<double>> *alg;
 	lemon::SmartGraph::EdgeMap<double> *dist;
 	lemon::SmartGraph::NodeMap<bool> *cut;
+
 public:
 	MinCut();
 	void init();
-	void build_graph(int N, vector<set<int> > Neighbor);
-	void build_graph_2(int N, vector<set<int> > Neighbor);
-	void run_maxflow(int N, vector<set<int> > Neighbor);
-	void run_maxflow_2(int N, vector<set<int> > Neighbor);
+	void build_graph(int N, vector<set<int>> Neighbor);
+	void build_graph_2(int N, vector<set<int>> Neighbor);
+	void run_maxflow(int N, vector<set<int>> Neighbor);
+	void run_maxflow_2(int N, vector<set<int>> Neighbor);
 	int addNode();
 	int addArc(int i, int j);
 	void addCost(int e_id, double cost);

@@ -4,7 +4,7 @@
             "type": "shell",
             "label": "C/C++: g++ build active file",
             "command": "/usr/bin/g++",
-            "args": ["-g", "${workspaceFolder}/src/*.cpp", "-o", "${workspaceFolder}/plct-brkga", "-lemon", "-fopenmp"],
+            "args": ["-g", "${workspaceFolder}/src/*.cpp", "-o", "${workspaceFolder}/tclp-brkga", "-lemon", "-fopenmp"],
             "options": {
                 "cwd": "${workspaceFolder}"
             },

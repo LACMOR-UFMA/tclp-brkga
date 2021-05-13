@@ -62,8 +62,8 @@ int Solution::checkFeasibility(ProblemInstance p, uint n_cores)
 #pragma omp parallel for num_threads(this->n_cores)
 	for (int k = 0; (k < p.NbK); ++k)
 	{
-		Path path(&p, k);
-		path = BFS_OD(p, k, Neighbor);
+		Path path(&p);
+		path = BFS(p, k, Neighbor);
 
 		if (path.getPath().size() > 0)
 		{

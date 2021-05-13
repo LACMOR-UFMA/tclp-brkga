@@ -3,55 +3,14 @@
 
 #include "BFS.h"
 
-int *BFS(int init_node, int NMAX, vector<int> *adjlist)
-{
-	int *visited = new int[NMAX];
-	int *distance = new int[NMAX];
-
-	for (int i = 0; i < NMAX; ++i)
-	{
-		visited[i] = 0;
-		distance[i] = -1;
-	}
-
-	distance[init_node] = 0;
-	visited[init_node] = 1;
-	queue<int> bfsq;
-	bfsq.push(init_node);
-
-	//BFS
-	while (!bfsq.empty())
-	{
-		int u = bfsq.front();
-
-		bfsq.pop();
-
-		//Now look at all neighbours of u
-		for (uint i = 0; i < adjlist[u].size(); i++)
-		{
-			int v = adjlist[u][i];
-			//If v has not been processed yet, do that now
-			if (!visited[v])
-			{
-				visited[v] = 1;
-				distance[v] = distance[u] + 1;
-				bfsq.push(v);
-			}
-		}
-	}
-	//We are done. We have the reachability and distances to all vertices
-
-	return visited;
-}
-
-Path BFS_OD(ProblemInstance &p, int cdt, vector<set<int>> Neighbor)
+Path BFS(ProblemInstance &p, int cdt, vector<set<int>> Neighbor)
 {
 
 	int *visited = new int[p.NbNode];
 	int *pred = new int[p.NbNode];
 	bool flag = false;
 
-	Path path(&p, cdt);
+	Path path(&p);
 
 	for (int i = 0; i < p.NbNode; ++i)
 	{

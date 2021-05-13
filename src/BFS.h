@@ -2,7 +2,7 @@
 #define BFS_H_
 
 #include <iostream>
-#include<stdio.h>
+#include <stdio.h>
 #include <queue>
 #include <vector>
 
@@ -10,8 +10,6 @@
 
 using namespace std;
 
-int * BFS(int init_node, int NMAX, vector<int>* adjlist);
-
-Path BFS_OD(ProblemInstance& p, int cdt, vector<set<int> > Neighbor);
+Path BFS(ProblemInstance &p, int cdt, vector<set<int>> Neighbor);
 
 #endif /* BFS_H_ */
