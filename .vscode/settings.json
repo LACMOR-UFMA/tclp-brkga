@@ -13,5 +13,7 @@
         "tuple": "cpp",
         "type_traits": "cpp",
         "utility": "cpp"
-    }
+    },
+    "python.pythonPath": "/home/igor/.envs/brkga/bin/python3",
+    "python.formatting.provider": "black"
 }
