@@ -14,6 +14,6 @@
         "type_traits": "cpp",
         "utility": "cpp"
     },
-    "python.pythonPath": "/home/igor/.envs/brkga/bin/python3",
+    "python.pythonPath": "/home/igor/.envs/brkga/bin/python",
     "python.formatting.provider": "black"
 }
