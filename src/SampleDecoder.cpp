@@ -67,3 +67,14 @@ double SampleDecoder::decode(const std::vector<double> &chromosome, int cores) c
 		return result;
 	}
 }
+
+std::vector<double> *SampleDecoder::localSearch(const std::vector<double> &chromosome) const
+{
+	vector<double> *newChromossome = new vector<double>(chromosome.size(), 0.F);
+
+	std::copy(chromosome.begin(), chromosome.end(), newChromossome->begin());
+
+	// TODO: perform local search
+
+	return newChromossome;
+}

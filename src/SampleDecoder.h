@@ -41,6 +41,7 @@ public:
 	SampleDecoder(ProblemInstance _p);
 	~SampleDecoder();
 	double decode(const std::vector<double> &chromosome, int cores) const;
+	std::vector<double> *localSearch(const std::vector<double> &chromosome) const;
 };
 
 #endif

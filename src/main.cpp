@@ -81,6 +81,11 @@ int main(int argc, char *argv[])
 			algorithm.exchangeElite(EXCHANGE_NUMBER); // exchange top individuals
 		}
 
+		if ((++generation) % EXCHANGE_INTERVAL == 0)
+		{
+			algorithm.localSearch(EXCHANGE_NUMBER); // performs local search
+		}
+
 		finalClock = clock();
 	} while (generation < MAX_GENERATIONS && ((double)finalClock - initialClock) / CLOCKS_PER_SEC < 3600);
 

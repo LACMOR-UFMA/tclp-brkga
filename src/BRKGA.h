@@ -106,6 +106,12 @@ public:
 	void exchangeElite(unsigned M);
 
 	/**
+	 * Performs local search on elite chromossomes
+	 * @param M number of elite chromosomes to select from each population
+	 */
+	void localSearch(unsigned M);
+
+	/**
 	 * Returns the current population
 	 */
 	const Population &getPopulation(unsigned k = 0) const;
@@ -323,6 +329,35 @@ void BRKGA<Decoder, RNG>::exchangeElite(unsigned M)
 
 				--dest;
 			}
+		}
+	}
+
+	for (int j = 0; j < int(K); ++j)
+	{
+		current[j]->sortFitness();
+	}
+}
+
+template <class Decoder, class RNG>
+void BRKGA<Decoder, RNG>::localSearch(unsigned M)
+{
+	if (M == 0 || M >= p)
+	{
+		throw std::range_error("M cannot be zero or >= p.");
+	}
+
+	for (unsigned i = 0; i < K; ++i)
+	{
+		// Select M best of Population [i] to perform local search
+		for (unsigned m = 0; m < M; ++m)
+		{
+			// Get the m-th best of Population [i]:
+			std::vector<double> *crhomossome = refDecoder.localSearch(current[i]->getChromosome(m));
+
+			// Replace the m-th best of Population [i] with new chromossome from localSearch:
+			std::copy(crhomossome->begin(), crhomossome->end(), current[i]->getChromosome(m).begin());
+
+			current[i]->setFitness(m, refDecoder.decode(current[i]->getChromosome(m), MAX_THREADS));
 		}
 	}
 
