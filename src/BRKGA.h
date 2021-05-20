@@ -352,7 +352,7 @@ void BRKGA<Decoder, RNG>::localSearch(unsigned M)
 		for (unsigned m = 0; m < M; ++m)
 		{
 			// Get the m-th best of Population [i]:
-			std::vector<double> *crhomossome = refDecoder.localSearch(current[i]->getChromosome(m));
+			std::vector<double> *crhomossome = refDecoder.localSearch(current[i]->getChromosome(m), current[i]->getFitness(m), MAX_THREADS);
 
 			// Replace the m-th best of Population [i] with new chromossome from localSearch:
 			std::copy(crhomossome->begin(), crhomossome->end(), current[i]->getChromosome(m).begin());

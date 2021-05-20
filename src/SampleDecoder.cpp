@@ -68,13 +68,43 @@ double SampleDecoder::decode(const std::vector<double> &chromosome, int cores) c
 	}
 }
 
-std::vector<double> *SampleDecoder::localSearch(const std::vector<double> &chromosome) const
+std::vector<double> *SampleDecoder::localSearch(const std::vector<double> &chromosome, double fitness, int cores) const
 {
+	int randPosition;
+	double oldGeneValue, newFitness;
+
 	vector<double> *newChromossome = new vector<double>(chromosome.size(), 0.F);
+	vector<double> edges;
+
+	for (uint i = 0; i < chromosome.size(); i++)
+	{
+		if (chromosome[i] > 0.5)
+		{
+			edges.push_back(i);
+		}
+	}
 
 	std::copy(chromosome.begin(), chromosome.end(), newChromossome->begin());
 
-	// TODO: perform local search
+	for (uint i = 0; i < 30; i++)
+	{
+		randPosition = edges[rand() % edges.size()];
+
+		oldGeneValue = newChromossome->at(randPosition);
+		newChromossome->at(randPosition) = 0.F;
+		newFitness = this->decode(*newChromossome, cores);
+
+		if (newFitness < fitness)
+		{
+			cout << "local search found better solution. Old fitness: " << fitness << " New fitness: " << newFitness << endl;
+			fitness = newFitness;
+		}
+		else
+		{
+			// put edge back to solution
+			newChromossome->at(randPosition) = oldGeneValue;
+		}
+	}
 
 	return newChromossome;
 }

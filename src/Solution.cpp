@@ -40,7 +40,6 @@ int Solution::checkFeasibility(ProblemInstance p, uint n_cores)
 
 	set<int> Contador = this->getEdge();
 
-#pragma omp parallel for num_threads(this->n_cores)
 	for (int i = 0; i < p.NbNode; ++i)
 	{
 		set<int> temp;

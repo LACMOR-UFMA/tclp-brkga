@@ -12,7 +12,9 @@
         "functional": "cpp",
         "tuple": "cpp",
         "type_traits": "cpp",
-        "utility": "cpp"
+        "utility": "cpp",
+        "cstdlib": "cpp",
+        "algorithm": "cpp"
     },
     "python.pythonPath": "/home/igor/.envs/brkga/bin/python",
     "python.formatting.provider": "black"
