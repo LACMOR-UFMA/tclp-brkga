@@ -45,7 +45,7 @@ int main(int argc, char *argv[])
 	SampleDecoder decoder(problem_instance);
 
 	uint _n = problem_instance.NbEdge;			// number of genes in each chromosome
-	uint _p = 20;								// number of elements in each population
+	uint _p = 100;								// number of elements in each population
 	double _pe = 0.30;							// percentage of elite items into each population
 	double _pm = 0.20;							// percentage of mutants introduced at each generation into the population
 	double _rhoe = 0.70;						// probability that an offspring inherits the allele of its elite parent
@@ -54,7 +54,7 @@ int main(int argc, char *argv[])
 	uint generation = 0;
 	const uint EXCHANGE_INTERVAL = 15;
 	const uint EXCHANGE_NUMBER = 2;
-	const uint MAX_GENERATIONS = 100;
+	const uint MAX_GENERATIONS = 200;
 
 	Timer timer(false);
 	const uint64_t cSeed = seed;
@@ -76,6 +76,7 @@ int main(int argc, char *argv[])
 	do
 	{
 		algorithm.evolve(); // evolve the population for one generation
+
 		if ((++generation) % EXCHANGE_INTERVAL == 0 && _K > 1)
 		{
 			algorithm.exchangeElite(EXCHANGE_NUMBER); // exchange top individuals
