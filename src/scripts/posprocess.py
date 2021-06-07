@@ -1,4 +1,5 @@
 from os import listdir
+import os
 from os.path import isfile, join
 import pandas as pd
 import seaborn as sns
@@ -39,13 +40,23 @@ def read_results(path: str):
 
     return data_rows
 
+def export_to_csv(df: pd.DataFrame, max_threads: int, file: str):
+    return df[df['max_threads'] == max_threads].groupby('instance').mean().round(2).to_csv("./results_posprocess/" + file)
 
 def main():
     df = pd.DataFrame(read_results("./results"))
 
+    threads = list(df['max_threads'].unique())
+
+    # export csv files by thread for all states with mean time and fitness
+    [export_to_csv(df, t, f"results_{t}.csv") for t in threads]
+
+    # plot Time x Max Threads
     create_facet_grid_gplot(
-        df, "max_threads", "time", "instance", "Max Threads", "Running time"
+       df, "max_threads", "time", "instance", "Max Threads", "Running time"
     )
+
+    # plot Objective Function x Max Threads
     create_facet_grid_gplot(
         df,
         "max_threads",
