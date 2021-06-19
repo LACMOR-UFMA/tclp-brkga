@@ -1,9 +1,11 @@
 from os import listdir
-import os
 from os.path import isfile, join
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
+
+RESULTS_FOLDER = "results_16062021"
+RESULTS_POSPROCESS_FOLDER = "results_posprocess_18062021"
 
 
 def create_facet_grid_gplot(df: pd.DataFrame, xaxis: str, yaxis: str, col: str, xlabel: str, ylabel: str):
@@ -15,13 +17,20 @@ def create_facet_grid_gplot(df: pd.DataFrame, xaxis: str, yaxis: str, col: str, 
 
 
 def read_data_line(file: str, line: str):
-    if line.strip() != "Instance;FO;Time":  # skipping first line from result file
+    nthreads = file.strip().split("_")
+
+    if len(nthreads) == 1:
+        nthreads = 1
+    else:
+        nthreads = int(nthreads[1].split(".")[0])
+
+    if (line.strip()[:9] == "instances"):  # skipping first line from result file
         line_result = line.strip().split(";")
         return {
             "instance": line_result[0][10:-4],
             "objective_function": float(line_result[1]),
             "time": float(line_result[2]),
-            "max_threads": int(file.strip().split("_")[1].split(".")[0]),
+            "max_threads": nthreads,
         }
     else:
         return {}
@@ -41,15 +50,35 @@ def read_results(path: str):
     return data_rows
 
 def export_to_csv(df: pd.DataFrame, max_threads: int, file: str):
-    return df[df['max_threads'] == max_threads].groupby('instance').mean().round(2).to_csv("./results_posprocess/" + file)
+    return df[df['max_threads'] == max_threads].groupby('instance').mean().round(2).to_csv(f"./{RESULTS_POSPROCESS_FOLDER}/" + file)
+
+def get_time_instance_single_thread(df_baseline, row):
+    return df_baseline[(df_baseline['instance'] == row[0]) & (df_baseline['max_threads'] == 1)]['time']
+
+def get_speed_up(df_baseline, row):
+    return get_time_instance_single_thread(df_baseline, row) / row[1]
+
+def get_speedup_dataframe(df: pd.DataFrame):
+    df_baseline = df.sort_values('max_threads').groupby(['instance', 'max_threads'], as_index=False).mean().round(2)
+    zipped_baseline = zip(df_baseline['instance'], df_baseline['time'], df_baseline['max_threads'])
+
+    df_baseline['speedup'] = [get_speed_up(df_baseline, row).iloc[0] for row in zipped_baseline]
+
+    return df_baseline
 
 def main():
-    df = pd.DataFrame(read_results("./results"))
+    df = pd.DataFrame(read_results(f"./{RESULTS_FOLDER}"))
 
-    threads = list(df['max_threads'].unique())
+    # calculate speedup
+    df_speedup = get_speedup_dataframe(df)
+
+    # plot speedup comparison
+    print(df_speedup)
 
     # export csv files by thread for all states with mean time and fitness
-    [export_to_csv(df, t, f"results_{t}.csv") for t in threads]
+    [export_to_csv(df, t, f"{RESULTS_POSPROCESS_FOLDER}_{t}.csv") for t in list(df['max_threads'].unique())]
+
+    sns.set_theme()
 
     # plot Time x Max Threads
     create_facet_grid_gplot(
