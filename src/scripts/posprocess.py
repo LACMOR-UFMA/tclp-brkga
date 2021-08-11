@@ -4,9 +4,9 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-RESULTS_FOLDER = "results_16062021"
-RESULTS_POSPROCESS_FOLDER = "results_posprocess_16062021"
-SHOULD_CALCULATE_SPEEDUP = True
+RESULTS_FOLDER = "results_08082021_pop_multi_thread"
+RESULTS_POSPROCESS_FOLDER = "results_posprocess_08082021_pop_multi_thread"
+SHOULD_CALCULATE_SPEEDUP = False
 
 
 def create_facet_grid_gplot(
@@ -40,7 +40,7 @@ def read_data_line(file: str, line: str):
 
 
 def read_results(path: str):
-    files_results = [f for f in listdir(path) if isfile(join(path, f))]
+    files_results = [f for f in listdir(path) if isfile(join(path, f)) and f.endswith(".out")]
 
     data_rows = []
     for file_result in files_results:

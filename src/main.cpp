@@ -45,17 +45,18 @@ int main(int argc, char *argv[])
 	SampleDecoder decoder(problem_instance);
 
 	uint _n = problem_instance.NbEdge;			// number of genes in each chromosome
-	uint _p = 100;								// number of elements in each population
+	uint _p = 20;								// number of elements in each population
 	double _pe = 0.30;							// percentage of elite items into each population
 	double _pm = 0.20;							// percentage of mutants introduced at each generation into the population
 	double _rhoe = 0.70;						// probability that an offspring inherits the allele of its elite parent
-	uint _K = 1;								// number of independent Populations
+	uint _K = 3;								// number of independent Populations
 	
 	uint generation = 0;
 	const uint EXCHANGE_INTERVAL = 15;
 	const uint EXCHANGE_NUMBER = 2;
-	const uint MAX_GENERATIONS = 200;
+	const uint MAX_GENERATIONS = 100;
 
+	const double LIMIT_TIME = 3600;
 	Timer timer(false);
 	const uint64_t cSeed = seed;
 
@@ -70,20 +71,17 @@ int main(int argc, char *argv[])
 
 	BRKGA<SampleDecoder, MTRand> algorithm(nc1, nc2, nc3, problem_instance, _n, _p, _pe, _pm, _rhoe, decoder, rng, _K, MAX_THREADS);
 
-	clock_t initialClock, finalClock;
-	initialClock = clock();
-
 	do
 	{
 		algorithm.evolve(); // evolve the population for one generation
 
-		if ((++generation) % EXCHANGE_INTERVAL == 0 && _K > 1)
+		generation++;
+
+		if (generation % EXCHANGE_INTERVAL == 0 && _K > 1)
 		{
 			algorithm.exchangeElite(EXCHANGE_NUMBER); // exchange top individuals
 		}
-
-		finalClock = clock();
-	} while (generation < MAX_GENERATIONS && ((double)finalClock - initialClock) / CLOCKS_PER_SEC < 3600);
+	} while (generation < MAX_GENERATIONS && timer.realTime() < LIMIT_TIME);
 
 	timer.halt();
 

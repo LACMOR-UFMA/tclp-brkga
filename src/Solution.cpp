@@ -57,7 +57,7 @@ int Solution::checkFeasibility(ProblemInstance p, uint n_cores)
 		Neighbor[p.edge[*it].head].erase(p.edge[*it].tail);
 	}
 
-	int inviability_degree = -1;
+	int inviability_degree = 0;
 
 #pragma omp parallel for num_threads(this->n_cores)
 	for (int k = 0; (k < p.NbK); ++k)
@@ -67,16 +67,12 @@ int Solution::checkFeasibility(ProblemInstance p, uint n_cores)
 
 		if (path.getPath().size() > 0)
 		{
-			inviability_degree = k;
-			k = p.NbK;
+#pragma omp critical
+			inviability_degree++;
 		}
 	}
 
-	if (inviability_degree == -1) {
-		return 0;
-	} else {
-		return p.NbK - inviability_degree;
-	}
+	return inviability_degree;
 }
 
 #endif // SOLUTION_CPP_

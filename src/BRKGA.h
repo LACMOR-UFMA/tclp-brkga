@@ -281,7 +281,6 @@ void BRKGA<Decoder, RNG>::evolve(unsigned generations)
 
 	for (unsigned i = 0; i < generations; ++i)
 	{
-#pragma omp parallel for num_threads(K)
 		for (unsigned j = 0; j < K; ++j)
 		{
 			evolution(*current[j], *previous[j]); // First evolve the population (curr, next)
@@ -451,9 +450,6 @@ inline void BRKGA<Decoder, RNG>::evolution(Population &curr, Population &next)
 			const unsigned sourceParent = ((refRNG.rand() < rhoe) ? eliteParent : noneliteParent);
 
 			next(i, j) = curr(curr.fitness[sourceParent].second, j);
-
-			//next(i, j) = (refRNG.rand() < rhoe) ? curr(curr.fitness[eliteParent].second, j) :
-			//		                              curr(curr.fitness[noneliteParent].second, j);
 		}
 
 		++i;

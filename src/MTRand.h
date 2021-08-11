@@ -330,6 +330,7 @@ inline MTRand::uint32 MTRand::randInt()
 	--left;
 
 	register uint32 s1;
+
 	s1 = *pNext++;
 	s1 ^= (s1 >> 11);
 	s1 ^= (s1 << 7) & 0x9d2c5680UL;
