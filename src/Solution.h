@@ -24,11 +24,8 @@ public:
 		cost = 0;
 	};
 
-	~Solution();
-
 	void add_Edge(int i);
 	void set_Cost(double objval);
-	void rm_Edge(int i);
 
 	set<int> getEdge() { return this->Edge; };
 	double getCost() { return cost; };

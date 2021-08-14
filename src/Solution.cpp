@@ -3,11 +3,6 @@
 
 #include "Solution.h"
 
-Solution::~Solution()
-{
-	Edge.clear();
-}
-
 void Solution::add_Edge(int i)
 {
 	Edge.insert(i);
@@ -16,11 +11,6 @@ void Solution::add_Edge(int i)
 void Solution::set_Cost(double objval)
 {
 	cost = objval;
-}
-
-void Solution::rm_Edge(int i)
-{
-	Edge.erase(i);
 }
 
 ostream &operator<<(ostream &strm, Solution &s)
@@ -40,7 +30,7 @@ int Solution::checkFeasibility(ProblemInstance p, uint n_cores)
 
 	set<int> Contador = this->getEdge();
 
-#pragma omp parallel for num_threads(this->n_cores)
+#pragma omp parallel for schedule(dynamic) num_threads(this->n_cores)
 	for (int i = 0; i < p.NbNode; ++i)
 	{
 		set<int> temp;
@@ -59,7 +49,7 @@ int Solution::checkFeasibility(ProblemInstance p, uint n_cores)
 
 	int inviability_degree = 0;
 
-#pragma omp parallel for num_threads(this->n_cores)
+#pragma omp parallel for schedule(dynamic) num_threads(this->n_cores)
 	for (int k = 0; (k < p.NbK); ++k)
 	{
 		Path path(&p);
@@ -67,7 +57,7 @@ int Solution::checkFeasibility(ProblemInstance p, uint n_cores)
 
 		if (path.getPath().size() > 0)
 		{
-#pragma omp critical
+#pragma omp atomic
 			inviability_degree++;
 		}
 	}

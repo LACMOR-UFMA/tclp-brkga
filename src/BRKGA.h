@@ -404,7 +404,7 @@ inline void BRKGA<Decoder, RNG>::initialize(const unsigned i)
 		j++;
 	}
 
-#pragma omp parallel for num_threads(MAX_THREADS)
+#pragma omp parallel for schedule(dynamic) num_threads(MAX_THREADS)
 	for (int j = 0; j < int(p); ++j)
 	{
 		const vector<double> &cromossomo = (*current[i])(j);
@@ -465,7 +465,7 @@ inline void BRKGA<Decoder, RNG>::evolution(Population &curr, Population &next)
 		++i;
 	}
 
-#pragma omp parallel for num_threads(MAX_THREADS)
+#pragma omp parallel for schedule(dynamic) num_threads(MAX_THREADS)
 	for (int i = int(pe); i < int(p); ++i)
 	{
 		const vector<double> &cromossomo = next.population[i];
