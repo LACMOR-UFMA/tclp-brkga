@@ -14,8 +14,8 @@ Construtivo::~Construtivo()
 Solution Construtivo::C1()
 {
 	Solution s(cores);
-	double custo = 0;
 	vector<int> Par;
+
 	for (int k = 0; k < p.NbK; ++k)
 	{
 		Par.push_back(k);
@@ -58,9 +58,6 @@ Solution Construtivo::C1()
 		Par.erase(Par.begin() + index);
 	}
 
-	custo = s.getEdge().size();
-	s.set_Cost(custo);
-
 	return s;
 }
 
@@ -69,7 +66,7 @@ Solution Construtivo::C2(long seed, uint n_cores)
 
 	Solution s(cores);
 	srand(seed);
-	double custo = 0;
+
 	bool Flag = false;
 	int posa, a, t, h;
 	vector<set<int>> Neighbor;
@@ -117,9 +114,6 @@ Solution Construtivo::C2(long seed, uint n_cores)
 		}
 	}
 
-	custo = s.getEdge().size();
-	s.set_Cost(custo);
-
 	return s;
 }
 
@@ -129,6 +123,7 @@ Solution Construtivo::C3()
 	vector<int> Par;
 	vector<set<int>> Neighbor;
 	int cont = 0;
+
 	for (int k = 0; k < p.NbK; ++k)
 	{
 		Par.push_back(k);
@@ -153,14 +148,10 @@ Solution Construtivo::C3()
 		MinCut alg = MinCut();
 
 		alg.run_maxflow(p.NbNode, Neighbor);
-
-		double flow = alg.generate_min_cut(p.commodity[Par[index]].orig, p.commodity[Par[index]].dest); //Calculando Corte Mínimo
-
-		s.set_Cost(s.getCost() + flow);
+		alg.generate_min_cut(p.commodity[Par[index]].orig, p.commodity[Par[index]].dest);
 
 		for (int i = 0; i < p.NbNode; ++i)
 		{
-
 			if (alg.is_node_in_cut(i))
 			{
 				for (vector<int>::iterator it = p.Neighbor[i].begin(); it != p.Neighbor[i].end(); ++it)

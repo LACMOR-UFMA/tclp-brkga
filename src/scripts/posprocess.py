@@ -1,12 +1,13 @@
 from os import listdir
 from os.path import isfile, join
+from typing import Text
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-RESULTS_FOLDER = "results_08082021_pop_multi_thread"
-RESULTS_POSPROCESS_FOLDER = "results_posprocess_08082021_pop_multi_thread"
-SHOULD_CALCULATE_SPEEDUP = False
+RESULTS_FOLDER = "results_14082021_partial"
+RESULTS_POSPROCESS_FOLDER = "results_posprocess_14082021_partial"
+SHOULD_CALCULATE_SPEEDUP = True
 
 
 def create_facet_grid_gplot(

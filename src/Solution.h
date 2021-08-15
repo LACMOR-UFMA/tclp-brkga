@@ -15,7 +15,6 @@ class Solution
 private:
 	int n_cores;
 	double cost;
-	friend ostream &operator<<(ostream &, Solution &);
 
 public:
 	set<int> Edge;
@@ -25,10 +24,8 @@ public:
 	};
 
 	void add_Edge(int i);
-	void set_Cost(double objval);
 
 	set<int> getEdge() { return this->Edge; };
-	double getCost() { return cost; };
 	int checkFeasibility(ProblemInstance p, uint n_cores);
 };
 

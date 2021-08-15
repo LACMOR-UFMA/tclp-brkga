@@ -8,21 +8,6 @@ void Solution::add_Edge(int i)
 	Edge.insert(i);
 }
 
-void Solution::set_Cost(double objval)
-{
-	cost = objval;
-}
-
-ostream &operator<<(ostream &strm, Solution &s)
-{
-	for (set<int>::iterator it = s.Edge.begin(); it != s.Edge.end(); ++it)
-	{
-		strm << *it << " ";
-	}
-
-	return strm;
-}
-
 int Solution::checkFeasibility(ProblemInstance p, uint n_cores)
 {
 
