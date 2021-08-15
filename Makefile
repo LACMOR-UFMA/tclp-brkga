@@ -11,5 +11,14 @@ build-nomp:
 build-cluster:
 	$(CXX) $(CXXFLAGS) -Ofast -o tclp-brkga $(FILES) -lemon -fopenmp -I/app/devel/include -L/app/devel/lib
 
+build-cluster-nomp:
+	$(CXX) $(CXXFLAGS) -Ofast -o tclp-brkga-nomp $(FILES) -lemon -I/app/devel/include -L/app/devel/lib
+
+build-profiling:
+	$(CXX) -pg $(CXXFLAGS) -Ofast -o tclp-brkga-profiling $(FILES) -lemon -fopenmp
+
 clean:
 	rm -rf *.o tclp-brkga tclp-brkga-nomp
+
+clean-profiling:
+	rm -rf tclp-brkga-profiling gmon.out profiling-result.txt
