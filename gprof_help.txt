@@ -1,0 +1,8 @@
+1. Para realizar o profiling, uma vez que o build com a diretiva (-pg) foi efetuado, deve-se executar o programa gerado.
+    Ex: ./tclp-brkga-profiling instances/AM.txt 1 50 1 1 8
+
+2. Para colher os resultados da analise, basta executar gprof.
+    Ex: gprof ./tclp-brkga-profiling > profiling-result.txt
+
+3. Para gerar o grafico com o gprof2dot basta executar o script com o caminho do arquivo de saida da etapa anterior.
+    Ex: python gprof2dot.py "../BRKGA_Code/profiling-result.txt" | dot -Tpng -o output.png
