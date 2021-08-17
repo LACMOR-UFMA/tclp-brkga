@@ -7,10 +7,6 @@ Construtivo::Construtivo(ProblemInstance &_p, int cores) : p(_p), cores(cores)
 {
 }
 
-Construtivo::~Construtivo()
-{
-}
-
 Solution Construtivo::C1()
 {
 	Solution s(cores);

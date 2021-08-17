@@ -21,7 +21,6 @@ private:
 
 public:
 	Construtivo(ProblemInstance &_p, int cores);
-	~Construtivo();
 	Solution C1();
 	Solution C2(long seed, uint n_cores);
 	Solution C3();

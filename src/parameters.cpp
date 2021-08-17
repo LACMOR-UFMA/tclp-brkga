@@ -6,10 +6,6 @@ Parameters::Parameters(const char *fileName)
     this->load();
 }
 
-Parameters::~Parameters()
-{
-}
-
 void Parameters::load()
 {
     if (!this->file)

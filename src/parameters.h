@@ -17,7 +17,6 @@ class Parameters
 {
 public:
     Parameters(const char *fileName);
-    virtual ~Parameters();
 
     unordered_map<uint, uint> getPods();
     unordered_map<uint, pair<uint, uint>> getEdges();

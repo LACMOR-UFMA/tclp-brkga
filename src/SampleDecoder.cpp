@@ -7,14 +7,10 @@
 
 #include "SampleDecoder.h"
 
-SampleDecoder::SampleDecoder(ProblemInstance _p, TCLP *_tclp)
+SampleDecoder::SampleDecoder(ProblemInstance *_p, TCLP *_tclp)
 {
 	p = _p;
 	tclp = _tclp;
-}
-
-SampleDecoder::~SampleDecoder()
-{
 }
 
 uint64_t SampleDecoder::hashCode(uint v[], uint size) const
@@ -49,8 +45,6 @@ double SampleDecoder::decode(const std::vector<double> &chromosome, int cores) c
 
 	uint64_t hashcode = this->hashCode(c, chromosomeSize);
 	map<uint64_t, double>::const_iterator it = this->memoization.find(hashcode);
-	//int inviavel = s.CheckFeas(p, cores);
-	int inviavel = s.CheckFeas3(this->tclp);
 
 	if (it != this->memoization.end())
 	{
@@ -59,7 +53,7 @@ double SampleDecoder::decode(const std::vector<double> &chromosome, int cores) c
 	else
 	{
 		size_t edgeSize = s.getEdge().size();
-		int violations = s.checkFeasibility(p, cores);
+		int violations = s.checkFeasibility(this->tclp, this->p);
 		double result = (violations * M) + edgeSize;
 
 		if (violations == 0)

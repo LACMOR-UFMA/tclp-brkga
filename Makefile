@@ -1,6 +1,6 @@
 CXX = g++
 CXXFLAGS = -std=c++0x -Wall -g -O3 -march=native -mtune=native
-FILES = src/main.cpp src/Construtivo.cpp src/MinCut.cpp src/Path.cpp src/ProblemInstance.cpp src/SampleDecoder.cpp src/Solution.cpp src/BFS.cpp src/Scanner.cpp
+FILES = src/main.cpp src/Construtivo.cpp src/MinCut.cpp src/parameters.cpp src/ProblemPath.cpp src/ProblemInstance.cpp src/SampleDecoder.cpp src/Solution.cpp src/BFS.cpp src/Scanner.cpp src/tclp.cpp
 
 build:
 	$(CXX) $(CXXFLAGS) -Ofast -o tclp-brkga $(FILES) -lemon -fopenmp
