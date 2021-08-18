@@ -365,7 +365,7 @@ inline void BRKGA<Decoder, RNG>::initialize(const unsigned i)
 		{
 			long seed = time(NULL);
 			srand(seed);
-			s2 = builder.C2(seed, (uint)MAX_THREADS);
+			s2 = builder.C2(seed);
 			Sensores = s2.getEdge();
 			for (set<int>::iterator it2 = Sensores.begin();
 				 it2 != Sensores.end(); ++it2)

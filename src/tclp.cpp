@@ -20,12 +20,16 @@ void TCLP::initialize()
 
         uNode = this->buildNode(it.second.first);
         vNode = this->buildNode(it.second.second);
-        edge = this->graph.addEdge(uNode, vNode);
+
+        edge = findEdge(this->graph, uNode, vNode);
+        if (edge == INVALID) {
+            edge = this->graph.addEdge(uNode, vNode);
+        }
+
         this->edgesToLemon.insert({it.first, this->graph.id(edge)});
     }
     this->discretizePodsToLemon();
     this->nodeMap = new SmartGraph::NodeMap<bool>(this->graph, true);
-    this->edgeMap = new SmartGraph::EdgeMap<bool>(this->graph, false);
 }
 
 SmartGraph::Node TCLP::buildNode(unsigned int nodeId)

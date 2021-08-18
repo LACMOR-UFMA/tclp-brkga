@@ -9,7 +9,7 @@ Construtivo::Construtivo(ProblemInstance &_p, int cores) : p(_p), cores(cores)
 
 Solution Construtivo::C1()
 {
-	Solution s(cores);
+	Solution s(this->cores);
 	vector<int> Par;
 
 	for (int k = 0; k < p.NbK; ++k)
@@ -57,10 +57,10 @@ Solution Construtivo::C1()
 	return s;
 }
 
-Solution Construtivo::C2(long seed, uint n_cores)
+Solution Construtivo::C2(long seed)
 {
 
-	Solution s(cores);
+	Solution s(this->cores);
 	srand(seed);
 
 	bool Flag = false;
@@ -91,7 +91,7 @@ Solution Construtivo::C2(long seed, uint n_cores)
 		while (Flag)
 		{
 			ProblemPath path(&this->p, Par[index]);
-			path = BFS_OD(this->p, Par[index], Neighbor, n_cores);
+			path = BFS_OD(this->p, Par[index], Neighbor);
 			if (path.getPath().size() > 0)
 			{
 				posa = rand() % path.getPath().size();
@@ -115,7 +115,7 @@ Solution Construtivo::C2(long seed, uint n_cores)
 
 Solution Construtivo::C3()
 {
-	Solution s(cores);
+	Solution s(this->cores);
 	vector<int> Par;
 	vector<set<int>> Neighbor;
 	int cont = 0;

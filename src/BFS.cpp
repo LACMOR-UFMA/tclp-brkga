@@ -3,9 +3,8 @@
 
 #include "BFS.h"
 
-ProblemPath BFS_OD(ProblemInstance &p, int cdt, vector<set<int>> Neighbor, uint n_cores)
+ProblemPath BFS_OD(ProblemInstance &p, int cdt, vector<set<int>> Neighbor)
 {
-
 	int *visited = new int[p.NbNode];
 	int *pred = new int[p.NbNode];
 	bool flag = false;

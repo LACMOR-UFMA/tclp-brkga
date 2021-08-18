@@ -30,7 +30,6 @@ public:
     SmartGraph graph;
 
     SmartGraph::NodeMap<bool> *nodeMap;
-    SmartGraph::EdgeMap<bool> *edgeMap;
 
     unordered_map<unsigned int, unsigned int> nodesToLemon;
     unordered_map<unsigned int, unsigned int> edgesToLemon;

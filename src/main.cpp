@@ -47,16 +47,16 @@ int main(int argc, char *argv[])
 	TCLP tclp(&params);
 
 	uint _n = problem_instance.NbEdge;			// number of genes in each chromosome
-	uint _p = 20;								// number of elements in each population
+	uint _p = 100;								// number of elements in each population
 	double _pe = 0.30;							// percentage of elite items into each population
 	double _pm = 0.20;							// percentage of mutants introduced at each generation into the population
 	double _rhoe = 0.70;						// probability that an offspring inherits the allele of its elite parent
-	uint _K = 3;								// number of independent Populations
+	uint _K = 1;								// number of independent Populations
 	
 	uint generation = 0;
 	const uint EXCHANGE_INTERVAL = 15;
 	const uint EXCHANGE_NUMBER = 2;
-	const uint MAX_GENERATIONS = 100;
+	const uint MAX_GENERATIONS = 200;
 
 	const double LIMIT_TIME = 3600;
 	Timer timer(false);
