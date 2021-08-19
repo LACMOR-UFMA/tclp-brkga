@@ -33,7 +33,6 @@ class SampleDecoder
 {
 private:
 	mutable map<uint64_t, double> memoization;
-	uint64_t hashCode(uint v[], uint size) const;
 
 public:
 	SampleDecoder(ProblemInstance *_p, TCLP *_tclp);
