@@ -1,12 +1,11 @@
 from os import listdir
 from os.path import isfile, join
-from typing import Text
 import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-RESULTS_FOLDER = "results_14082021_partial"
-RESULTS_POSPROCESS_FOLDER = "results_posprocess_14082021_partial"
+RESULTS_FOLDER = "results_19082021"
+RESULTS_POSPROCESS_FOLDER = "results_posprocess_19082021"
 SHOULD_CALCULATE_SPEEDUP = True
 
 

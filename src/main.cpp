@@ -13,6 +13,7 @@
 #include "SampleDecoder.h"
 #include <ctime>
 #include "parameters.h"
+#include "omp.h"
 
 using namespace std;
 using namespace lemon;
@@ -64,16 +65,17 @@ int main(int argc, char *argv[])
 
 	MTRand rng(cSeed);			 						// initialize the random number generator - BRKGA
 	srand(cSeed);				 						// initialize the random number generator - Construtivo
-	SampleDecoder decoder(&problem_instance, &tclp); 	// initialize the decoder
-
-	timer.start();
+	SampleDecoder decoder(problem_instance, tclp); 		// initialize the decoder
 
 	nc1 = _p * nc1 / 100.0;
 	nc2 = _p * nc2 / 100.0;
 	nc3 = _p * nc3 / 100.0;
 
+	timer.start();
+
 	BRKGA<SampleDecoder, MTRand> algorithm(nc1, nc2, nc3, problem_instance, _n, _p, _pe, _pm, _rhoe, decoder, rng, _K, MAX_THREADS);
 
+	double currentSolution, bestSolution = 9999, timeBestSolution = 0;
 	do
 	{
 		algorithm.evolve(); // evolve the population for one generation
@@ -84,11 +86,17 @@ int main(int argc, char *argv[])
 		{
 			algorithm.exchangeElite(EXCHANGE_NUMBER); // exchange top individuals
 		}
+
+		currentSolution = algorithm.getBestFitness();
+		if (currentSolution < bestSolution) {
+			bestSolution = currentSolution;
+			timeBestSolution = timer.realTime();
+		}
 	} while (generation < MAX_GENERATIONS && timer.realTime() < LIMIT_TIME);
 
 	timer.halt();
 
-	printf("%s;%.2f;%.2f\n", instance_file, algorithm.getBestFitness(), timer.realTime());
+	printf("%s;%.2f;%.2f;%.2f\n", instance_file, algorithm.getBestFitness(), timer.realTime(), timeBestSolution);
 
 	return 0;
 }

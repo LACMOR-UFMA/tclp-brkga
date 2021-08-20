@@ -29,11 +29,9 @@ public:
 
     SmartGraph graph;
 
-    SmartGraph::NodeMap<bool> *nodeMap;
-
-    unordered_map<unsigned int, unsigned int> nodesToLemon;
-    unordered_map<unsigned int, unsigned int> edgesToLemon;
-    unordered_map<unsigned int, unsigned int> podsToLemon;
+    unordered_map<uint, uint> nodesToLemon;
+    unordered_map<uint, uint> edgesToLemon;
+    unordered_map<uint, uint> podsToLemon;
 
     vector<pair<uint, uint>> discretizedPodsToLemon;
 };

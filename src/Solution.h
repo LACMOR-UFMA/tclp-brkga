@@ -24,7 +24,7 @@ public:
 
 	void add_Edge(int i);
 	set<int> getEdge() { return this->Edge; };
-	int checkFeasibility(TCLP *tclp, ProblemInstance *p);
+	int checkFeasibility(TCLP &tclp, ProblemInstance &p);
 };
 
 #endif //SOLUTION_H_

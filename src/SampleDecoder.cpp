@@ -7,10 +7,8 @@
 
 #include "SampleDecoder.h"
 
-SampleDecoder::SampleDecoder(ProblemInstance *_p, TCLP *_tclp)
+SampleDecoder::SampleDecoder(ProblemInstance &_p, TCLP &_tclp): tclp(_tclp), p(_p)
 {
-	p = _p;
-	tclp = _tclp;
 }
 
 double SampleDecoder::decode(const std::vector<double> &chromosome, int cores) const
@@ -31,14 +29,11 @@ double SampleDecoder::decode(const std::vector<double> &chromosome, int cores) c
 
 	size_t edgeSize = s.getEdge().size();
 	uint64_t hashcode = cumSum + edgeSize;
-	map<uint64_t, double>::const_iterator it = this->memoization.find(hashcode);
 
-	if (it != this->memoization.end())
-	{
-		return it->second;
-	}
-	else
-	{
+	try {
+		double result = this->memoization.at(hashcode);
+		return result;
+	} catch (const out_of_range err) {
 		int violations = s.checkFeasibility(this->tclp, this->p);
 		double result = (violations * M) + edgeSize;
 

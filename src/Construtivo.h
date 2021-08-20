@@ -22,7 +22,7 @@ private:
 public:
 	Construtivo(ProblemInstance &_p, int cores);
 	Solution C1();
-	Solution C2(long seed);
+	Solution C2();
 	Solution C3();
 };
 

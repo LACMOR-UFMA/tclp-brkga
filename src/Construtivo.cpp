@@ -57,11 +57,9 @@ Solution Construtivo::C1()
 	return s;
 }
 
-Solution Construtivo::C2(long seed)
+Solution Construtivo::C2()
 {
-
 	Solution s(this->cores);
-	srand(seed);
 
 	bool Flag = false;
 	int posa, a, t, h;

@@ -17,6 +17,9 @@ build-cluster-nomp:
 build-profiling:
 	$(CXX) -pg $(CXXFLAGS) -Ofast -o tclp-brkga-profiling $(FILES) -lemon -fopenmp
 
+build-profiling-nomp:
+	$(CXX) -pg $(CXXFLAGS) -Ofast -o tclp-brkga-profiling-nomp $(FILES) -lemon
+
 clean:
 	rm -rf *.o tclp-brkga tclp-brkga-nomp
 

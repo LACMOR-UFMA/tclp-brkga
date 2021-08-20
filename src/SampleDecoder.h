@@ -35,11 +35,11 @@ private:
 	mutable map<uint64_t, double> memoization;
 
 public:
-	SampleDecoder(ProblemInstance *_p, TCLP *_tclp);
+	SampleDecoder(ProblemInstance &_p, TCLP &_tclp);
 	double decode(const std::vector<double> &chromosome, int cores) const;
 
-	TCLP *tclp;
-	ProblemInstance *p;
+	TCLP &tclp;
+	ProblemInstance &p;
 };
 
 #endif

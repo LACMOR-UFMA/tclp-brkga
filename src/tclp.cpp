@@ -29,7 +29,6 @@ void TCLP::initialize()
         this->edgesToLemon.insert({it.first, this->graph.id(edge)});
     }
     this->discretizePodsToLemon();
-    this->nodeMap = new SmartGraph::NodeMap<bool>(this->graph, true);
 }
 
 SmartGraph::Node TCLP::buildNode(unsigned int nodeId)
