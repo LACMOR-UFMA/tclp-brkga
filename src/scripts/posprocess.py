@@ -4,8 +4,8 @@ import pandas as pd
 import seaborn as sns
 import matplotlib.pyplot as plt
 
-RESULTS_FOLDER = "results_19082021"
-RESULTS_POSPROCESS_FOLDER = "results_posprocess_19082021"
+RESULTS_FOLDER = "results_28082021_speedup"
+RESULTS_POSPROCESS_FOLDER = "results_posprocess_28082021_speedup"
 SHOULD_CALCULATE_SPEEDUP = True
 
 

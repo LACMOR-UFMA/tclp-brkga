@@ -25,3 +25,6 @@ clean:
 
 clean-profiling:
 	rm -rf tclp-brkga-profiling gmon.out profiling-result.txt
+
+run-experiment:
+	rm -rf ./results & mkdir results & ./experiment.sh
