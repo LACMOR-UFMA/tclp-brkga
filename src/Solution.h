@@ -2,11 +2,10 @@
 #define SOLUTION_H_
 
 #include <iostream>
-#include "ProblemInstance.h"
-#include "BFS.h"
-#include "Path.h"
 #include <vector>
 #include <set>
+#include "tclp.h"
+#include "ProblemInstance.h"
 
 using namespace std;
 
@@ -24,9 +23,8 @@ public:
 	};
 
 	void add_Edge(int i);
-
 	set<int> getEdge() { return this->Edge; };
-	int checkFeasibility(ProblemInstance p, uint n_cores);
+	int checkFeasibility(TCLP &tclp, ProblemInstance &p);
 };
 
 #endif //SOLUTION_H_

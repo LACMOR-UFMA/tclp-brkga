@@ -9,7 +9,6 @@
 #include "Solution.h"
 #include "ProblemInstance.h"
 #include "BFS.h"
-#include "Path.h"
 #include "MinCut.h"
 
 using namespace std;
@@ -22,9 +21,8 @@ private:
 
 public:
 	Construtivo(ProblemInstance &_p, int cores);
-	~Construtivo();
 	Solution C1();
-	Solution C2(long seed, uint n_cores);
+	Solution C2();
 	Solution C3();
 };
 

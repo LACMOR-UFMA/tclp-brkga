@@ -12,6 +12,8 @@
 #include "MTRand.h"
 #include "SampleDecoder.h"
 #include <ctime>
+#include "parameters.h"
+#include "omp.h"
 
 using namespace std;
 using namespace lemon;
@@ -42,35 +44,38 @@ int main(int argc, char *argv[])
 
 	Scanner scanner(new File(instance_file));
 	ProblemInstance problem_instance(scanner);
-	SampleDecoder decoder(problem_instance);
+	Parameters params(instance_file);
+	TCLP tclp(&params);
 
 	uint _n = problem_instance.NbEdge;			// number of genes in each chromosome
-	uint _p = 20;								// number of elements in each population
+	uint _p = 100;								// number of elements in each population
 	double _pe = 0.30;							// percentage of elite items into each population
 	double _pm = 0.20;							// percentage of mutants introduced at each generation into the population
 	double _rhoe = 0.70;						// probability that an offspring inherits the allele of its elite parent
-	uint _K = 3;								// number of independent Populations
+	uint _K = 1;								// number of independent Populations
 	
 	uint generation = 0;
 	const uint EXCHANGE_INTERVAL = 15;
 	const uint EXCHANGE_NUMBER = 2;
-	const uint MAX_GENERATIONS = 100;
+	const uint MAX_GENERATIONS = 200;
 
 	const double LIMIT_TIME = 3600;
 	Timer timer(false);
 	const uint64_t cSeed = seed;
 
-	MTRand rng(cSeed);			 				// initialize the random number generator - BRKGA
-	srand(cSeed);				 				// initialize the random number generator - Construtivo
-
-	timer.start();
+	MTRand rng(cSeed);			 						// initialize the random number generator - BRKGA
+	srand(cSeed);				 						// initialize the random number generator - Construtivo
+	SampleDecoder decoder(problem_instance, tclp); 		// initialize the decoder
 
 	nc1 = _p * nc1 / 100.0;
 	nc2 = _p * nc2 / 100.0;
 	nc3 = _p * nc3 / 100.0;
 
+	timer.start();
+
 	BRKGA<SampleDecoder, MTRand> algorithm(nc1, nc2, nc3, problem_instance, _n, _p, _pe, _pm, _rhoe, decoder, rng, _K, MAX_THREADS);
 
+	double currentSolution, bestSolution = 9999, timeBestSolution = 0;
 	do
 	{
 		algorithm.evolve(); // evolve the population for one generation
@@ -81,11 +86,17 @@ int main(int argc, char *argv[])
 		{
 			algorithm.exchangeElite(EXCHANGE_NUMBER); // exchange top individuals
 		}
+
+		currentSolution = algorithm.getBestFitness();
+		if (currentSolution < bestSolution) {
+			bestSolution = currentSolution;
+			timeBestSolution = timer.realTime();
+		}
 	} while (generation < MAX_GENERATIONS && timer.realTime() < LIMIT_TIME);
 
 	timer.halt();
 
-	printf("%s;%.2f;%.2f\n", instance_file, algorithm.getBestFitness(), timer.realTime());
+	printf("%s;%.2f;%.2f;%.2f\n", instance_file, algorithm.getBestFitness(), timer.realTime(), timeBestSolution);
 
 	return 0;
 }

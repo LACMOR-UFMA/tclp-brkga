@@ -3,14 +3,13 @@
 
 #include "BFS.h"
 
-Path BFS(ProblemInstance &p, int cdt, vector<set<int>> Neighbor)
+ProblemPath BFS_OD(ProblemInstance &p, int cdt, vector<set<int>> Neighbor)
 {
-
 	int *visited = new int[p.NbNode];
 	int *pred = new int[p.NbNode];
 	bool flag = false;
 
-	Path path(&p);
+	ProblemPath path(&p, cdt);
 
 	for (int i = 0; i < p.NbNode; ++i)
 	{

@@ -15,11 +15,11 @@
       "program": "${workspaceFolder}/tclp-brkga",
       "args": [
         "instances/AC.txt",
-        "10",
-        "10",
+        "5",
+        "50",
         "5",
         "1",
-        "8"
+        "4"
       ],
       "stopAtEntry": false,
       "cwd": "${workspaceFolder}",

@@ -6,10 +6,10 @@
 #include <queue>
 #include <vector>
 
-#include "Path.h"
+#include "ProblemPath.h"
 
 using namespace std;
 
-Path BFS(ProblemInstance &p, int cdt, vector<set<int>> Neighbor);
+ProblemPath BFS_OD(ProblemInstance& p, int cdt, vector<set<int> > Neighbor);
 
 #endif /* BFS_H_ */

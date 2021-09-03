@@ -7,56 +7,34 @@
 
 #include "SampleDecoder.h"
 
-SampleDecoder::SampleDecoder(ProblemInstance _p)
+SampleDecoder::SampleDecoder(ProblemInstance &_p, TCLP &_tclp): tclp(_tclp), p(_p)
 {
-	p = _p;
-}
-
-SampleDecoder::~SampleDecoder()
-{
-}
-
-uint64_t SampleDecoder::hashCode(uint v[], uint size) const
-{
-	uint64_t cumsum = 0;
-	for (uint i = 0; i < size; ++i)
-	{
-		cumsum += v[i] * i;
-	}
-	return cumsum;
 }
 
 double SampleDecoder::decode(const std::vector<double> &chromosome, int cores) const
 {
 	Solution s(cores);
 	size_t chromosomeSize = chromosome.size();
-	uint c[chromosomeSize];
+	uint64_t cumSum = 0;
 	double M = 9999.0;
 
 	for (uint i = 0; i < chromosomeSize; i++)
 	{
 		if (chromosome[i] > 0.5)
 		{
-			c[i] = 1;
+			cumSum += i;
 			s.add_Edge(i);
 		}
-		else
-		{
-			c[i] = 0;
-		}
 	}
 
-	uint64_t hashcode = this->hashCode(c, chromosomeSize);
-	map<uint64_t, double>::const_iterator it = this->memoization.find(hashcode);
+	size_t edgeSize = s.getEdge().size();
+	uint64_t hashcode = cumSum + edgeSize;
 
-	if (it != this->memoization.end())
-	{
-		return it->second;
-	}
-	else
-	{
-		size_t edgeSize = s.getEdge().size();
-		int violations = s.checkFeasibility(p, cores);
+	try {
+		double result = this->memoization.at(hashcode);
+		return result;
+	} catch (const out_of_range err) {
+		int violations = s.checkFeasibility(this->tclp, this->p);
 		double result = (violations * M) + edgeSize;
 
 		if (violations == 0)

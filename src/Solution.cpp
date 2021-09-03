@@ -2,52 +2,38 @@
 #define SOLUTION_CPP_
 
 #include "Solution.h"
+#include "omp.h"
 
 void Solution::add_Edge(int i)
 {
-	Edge.insert(i);
+	this->Edge.insert(i);
 }
 
-int Solution::checkFeasibility(ProblemInstance p, uint n_cores)
+int Solution::checkFeasibility(TCLP &tclp, ProblemInstance &p)
 {
+	uint edge, violations = 0;
+	set<int> edges = this->getEdge();
 
-	vector<set<int>> Neighbor;
+	vector<pair<uint, uint>> pairs = tclp.discretizedPodsToLemon;
+	SmartGraph::EdgeMap<bool> edgeMap(tclp.graph, true);
+	SmartGraph::NodeMap<bool> nodeMap(tclp.graph, true);
 
-	set<int> Contador = this->getEdge();
-
-#pragma omp parallel for schedule(dynamic) num_threads(this->n_cores)
-	for (int i = 0; i < p.NbNode; ++i)
+	for (set<int>::iterator it = edges.begin(); it != edges.end(); ++it)
 	{
-		set<int> temp;
-		Neighbor.push_back(temp);
-		for (vector<int>::iterator it = p.Neighbor[i].begin(); it != p.Neighbor[i].end(); ++it)
+		edge = tclp.edgesToLemon.at(p.edge[*it].ID);
+		edgeMap[tclp.graph.edgeFromId(edge)] = false;
+	}
+
+	SubGraph<SmartGraph> subgraph(tclp.graph, nodeMap, edgeMap);
+	for (uint i = 0; i < pairs.size(); ++i)
+	{
+		if (tclp.hasPath(subgraph, pairs[i].first, pairs[i].second))
 		{
-			Neighbor[i].insert(*it);
+			violations++;
 		}
 	}
 
-	for (set<int>::iterator it = Contador.begin(); it != Contador.end(); ++it)
-	{
-		Neighbor[p.edge[*it].tail].erase(p.edge[*it].head);
-		Neighbor[p.edge[*it].head].erase(p.edge[*it].tail);
-	}
-
-	int inviability_degree = 0;
-
-#pragma omp parallel for schedule(dynamic) num_threads(this->n_cores)
-	for (int k = 0; (k < p.NbK); ++k)
-	{
-		Path path(&p);
-		path = BFS(p, k, Neighbor);
-
-		if (path.getPath().size() > 0)
-		{
-#pragma omp atomic
-			inviability_degree++;
-		}
-	}
-
-	return inviability_degree;
+	return violations;
 }
 
 #endif // SOLUTION_CPP_

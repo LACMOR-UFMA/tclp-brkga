@@ -77,7 +77,7 @@ public:
 #include <vector>
 #include <algorithm>
 	BRKGA(double nC1, double nC2, double nC3,
-		  ProblemInstance _problema, unsigned n, unsigned p, double pe,
+		  ProblemInstance _instance, unsigned n, unsigned p, double pe,
 		  double pm, double rhoe, const Decoder &refDecoder, RNG &refRNG,
 		  unsigned K, unsigned MAX_THREADS);
 
@@ -132,8 +132,8 @@ public:
 
 private:
 	// Heuristics constructors
-	double nC1, nC2, nC3, nGSR;
-	ProblemInstance problema;
+	double nC1, nC2, nC3;
+	ProblemInstance instance;
 
 	// Hyperparameters:
 	const unsigned n;  // number of genes in the chromosome
@@ -157,15 +157,13 @@ private:
 	// Local operations:
 	void initialize(const unsigned i); // initialize current population 'i' with random keys
 	void evolution(Population &curr, Population &next);
-	bool isRepeated(const std::vector<double> &chrA,
-					const std::vector<double> &chrB) const;
 };
 
 template <class Decoder, class RNG>
 BRKGA<Decoder, RNG>::BRKGA(double nc1, double nc2, double nc3,
-						   ProblemInstance _problema, unsigned _n, unsigned _p, double _pe,
+						   ProblemInstance _instance, unsigned _n, unsigned _p, double _pe,
 						   double _pm, double _rhoe, const Decoder &decoder, RNG &rng, unsigned _K,
-						   unsigned MAX) : nC1(nc1), nC2(nc2), nC3(nc3), problema(_problema), n(_n), p(_p), pe(unsigned(_pe *p)), pm(unsigned(_pm *p)), rhoe(_rhoe), refDecoder(decoder), refRNG(rng), K(_K), MAX_THREADS(MAX), previous(K, 0), current(K, 0)
+						   unsigned MAX) : nC1(nc1), nC2(nc2), nC3(nc3), instance(_instance), n(_n), p(_p), pe(unsigned(_pe *p)), pm(unsigned(_pm *p)), rhoe(_rhoe), refDecoder(decoder), refRNG(rng), K(_K), MAX_THREADS(MAX), previous(K, 0), current(K, 0)
 {
 	// Error check:
 	using std::range_error;
@@ -334,61 +332,49 @@ void BRKGA<Decoder, RNG>::exchangeElite(unsigned M)
 template <class Decoder, class RNG>
 inline void BRKGA<Decoder, RNG>::initialize(const unsigned i)
 {
-	Solution s1(MAX_THREADS), s2(MAX_THREADS), s3(MAX_THREADS);
-	Construtivo builder(problema, MAX_THREADS);
-
+	Construtivo builder(instance, MAX_THREADS);
 	uint j = 0;
+	set<int> solution;
+
 	//	initialize
 	if (nC1 > 0)
 	{
-		set<int> Sensores;
 		while (j < nC1)
 		{
-			s1 = builder.C1();
-			Sensores = s1.getEdge();
-
-			for (set<int>::iterator it2 = Sensores.begin();
-				 it2 != Sensores.end(); ++it2)
+			solution = builder.C1().getEdge();
+			for (set<int>::iterator it = solution.begin(); it != solution.end(); ++it)
 			{
-				unsigned index = *it2;
+				unsigned index = *it;
 				(*current[i])(j, index) = 0.999;
 			}
 			j++;
 		}
 	}
 
-	int aMais = j;
+	int cum = j;
 	if (nC2 > 0)
 	{
-		set<int> Sensores;
-		while (j < nC2 + aMais)
+		while (j < nC2 + cum)
 		{
-			long seed = time(NULL);
-			srand(seed);
-			s2 = builder.C2(seed, (uint)MAX_THREADS);
-			Sensores = s2.getEdge();
-			for (set<int>::iterator it2 = Sensores.begin();
-				 it2 != Sensores.end(); ++it2)
+			solution = builder.C2().getEdge();
+			for (set<int>::iterator it = solution.begin(); it != solution.end(); ++it)
 			{
-				unsigned index = *it2;
+				unsigned index = *it;
 				(*current[i])(j, index) = 0.999;
 			}
 			j++;
 		}
 	}
 
-	aMais = j;
+	cum = j;
 	if (nC3 > 0)
 	{
-		set<int> Sensores;
-		while (j < nC3 + aMais)
+		while (j < nC3 + cum)
 		{
-			s3 = builder.C3();
-			Sensores = s3.getEdge();
-			for (set<int>::iterator it2 = Sensores.begin();
-				 it2 != Sensores.end(); ++it2)
+			solution = builder.C3().getEdge();
+			for (set<int>::iterator it = solution.begin(); it != solution.end(); ++it)
 			{
-				unsigned index = *it2;
+				unsigned index = *it;
 				(*current[i])(j, index) = 0.999;
 			}
 			j++;
@@ -404,7 +390,7 @@ inline void BRKGA<Decoder, RNG>::initialize(const unsigned i)
 		j++;
 	}
 
-#pragma omp parallel for schedule(dynamic) num_threads(MAX_THREADS)
+#pragma omp parallel for if (MAX_THREADS > 1) schedule(dynamic) num_threads(MAX_THREADS)
 	for (int j = 0; j < int(p); ++j)
 	{
 		const vector<double> &cromossomo = (*current[i])(j);
@@ -465,7 +451,7 @@ inline void BRKGA<Decoder, RNG>::evolution(Population &curr, Population &next)
 		++i;
 	}
 
-#pragma omp parallel for schedule(dynamic) num_threads(MAX_THREADS)
+#pragma omp parallel for if (MAX_THREADS > 1) schedule(dynamic) num_threads(MAX_THREADS)
 	for (int i = int(pe); i < int(p); ++i)
 	{
 		const vector<double> &cromossomo = next.population[i];
