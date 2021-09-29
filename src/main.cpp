@@ -61,7 +61,14 @@ int main(int argc, char *argv[])
 
 	const double LIMIT_TIME = 3600;
 	Timer timer(false);
-	const uint64_t cSeed = seed;
+	uint64_t cSeed;
+	
+	// a zero seed should produces randomized execution
+	if (seed == 0) {
+		cSeed = time(NULL);
+	} else {
+		cSeed = seed;
+	}
 
 	MTRand rng(cSeed);			 						// initialize the random number generator - BRKGA
 	srand(cSeed);				 						// initialize the random number generator - Construtivo
