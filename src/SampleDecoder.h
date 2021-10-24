@@ -31,12 +31,9 @@
 
 class SampleDecoder
 {
-private:
-	mutable map<uint64_t, double> memoization;
-
 public:
 	SampleDecoder(ProblemInstance &_p, TCLP &_tclp);
-	double decode(const std::vector<double> &chromosome, int cores) const;
+	double decode(const std::vector<double> &chromosome) const;
 
 	TCLP &tclp;
 	ProblemInstance &p;
