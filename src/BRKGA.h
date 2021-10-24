@@ -390,11 +390,13 @@ inline void BRKGA<Decoder, RNG>::initialize(const unsigned i)
 		j++;
 	}
 
-#pragma omp parallel for if (MAX_THREADS > 1) schedule(dynamic) num_threads(MAX_THREADS)
-	for (int j = 0; j < int(p); ++j)
+	int k = 0;
+
+#pragma omp parallel for if (MAX_THREADS > 1) schedule(dynamic) num_threads(MAX_THREADS) private(k)
+	for (k = 0; k < int(p); ++k)
 	{
-		const vector<double> &cromossomo = (*current[i])(j);
-		current[i]->setFitness(j, refDecoder.decode(cromossomo, MAX_THREADS));
+		const vector<double> &cromossomo = (*current[i])(k);
+		current[i]->setFitness(k, refDecoder.decode(cromossomo));
 	}
 
 	// Sort:
@@ -451,11 +453,13 @@ inline void BRKGA<Decoder, RNG>::evolution(Population &curr, Population &next)
 		++i;
 	}
 
-#pragma omp parallel for if (MAX_THREADS > 1) schedule(dynamic) num_threads(MAX_THREADS)
-	for (int i = int(pe); i < int(p); ++i)
+	int k;
+
+#pragma omp parallel for if (MAX_THREADS > 1) schedule(dynamic) num_threads(MAX_THREADS) private(k)
+	for (k = int(pe); k < int(p); ++k)
 	{
-		const vector<double> &cromossomo = next.population[i];
-		next.setFitness(i, refDecoder.decode(cromossomo, MAX_THREADS));
+		const vector<double> &cromossomo = next.population[k];
+		next.setFitness(k, refDecoder.decode(cromossomo));
 	}
 
 	// Now we must sort 'current' by fitness, since things might have changed:

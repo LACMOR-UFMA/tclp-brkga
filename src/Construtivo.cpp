@@ -9,7 +9,7 @@ Construtivo::Construtivo(ProblemInstance &_p, int cores) : p(_p), cores(cores)
 
 Solution Construtivo::C1()
 {
-	Solution s(this->cores);
+	Solution s;
 	vector<int> Par;
 
 	for (int k = 0; k < p.NbK; ++k)
@@ -59,7 +59,7 @@ Solution Construtivo::C1()
 
 Solution Construtivo::C2()
 {
-	Solution s(this->cores);
+	Solution s;
 
 	bool Flag = false;
 	int posa, a, t, h;
@@ -113,7 +113,7 @@ Solution Construtivo::C2()
 
 Solution Construtivo::C3()
 {
-	Solution s(this->cores);
+	Solution s;
 	vector<int> Par;
 	vector<set<int>> Neighbor;
 	int cont = 0;

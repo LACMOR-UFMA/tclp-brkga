@@ -12,12 +12,11 @@ using namespace std;
 class Solution
 {
 private:
-	int n_cores;
 	double cost;
 
 public:
 	set<int> Edge;
-	Solution(int cores) : n_cores(cores)
+	Solution()
 	{
 		cost = 0;
 	};
