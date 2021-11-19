@@ -5,6 +5,9 @@ FILES = src/main.cpp src/Construtivo.cpp src/MinCut.cpp src/parameters.cpp src/P
 build:
 	$(CXX) $(CXXFLAGS) -Ofast -o tclp-brkga $(FILES) -lemon -fopenmp
 
+build-gperf:
+	$(CXX) $(CXXFLAGS) -ltcmalloc -Ofast -o tclp-brkga $(FILES) -lemon -fopenmp
+
 build-nomp:
 	$(CXX) $(CXXFLAGS) -Ofast -o tclp-brkga-nomp $(FILES) -lemon
 
