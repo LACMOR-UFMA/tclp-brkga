@@ -7,7 +7,7 @@ for instance in ${instances[@]}; do
   for num_thread in ${threads[@]}; do
     out_file="results/${instance}_${num_thread}.out"
     echo $out_file
-    echo "K: 1; pop: 100; pe: 0.3; pm: 0.2; generations: 200; c1: 1; c2: 50; c3: 1; schedule: dynamic" >> $out_file
+    echo "K: 3; pop: 20; pe: 0.3; pm: 0.2; generations: 100; c1: 1; c2: 50; c3: 1; schedule: dynamic" >> $out_file
     echo "Instance;FO;Time" >> $out_file
     for i in $(seq 1 10); do
       ./tclp-brkga "instances/${instance}.txt" 1 50 1 $i $num_thread >> $out_file
